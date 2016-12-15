@@ -9,6 +9,7 @@ use Yii;
  *
  * @property string $lesson_id
  * @property string $teacher_id
+ * @property integer $sort
  */
 class LessonTeacher extends \yii\db\ActiveRecord
 {
@@ -27,6 +28,7 @@ class LessonTeacher extends \yii\db\ActiveRecord
     {
         return [
             [['lesson_id', 'teacher_id'], 'required'],
+            [['sort'], 'integer'],
             [['lesson_id', 'teacher_id'], 'string', 'max' => 12],
         ];
     }
@@ -39,6 +41,7 @@ class LessonTeacher extends \yii\db\ActiveRecord
         return [
             'lesson_id' => '课程',
             'teacher_id' => '导师',
+            'sort' => '排序',
         ];
     }
 }

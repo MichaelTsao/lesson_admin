@@ -21,6 +21,7 @@ use yii\web\UploadedFile;
  * @property string $chapters
  * @property integer $status
  * @property string $ctime
+ * @property string $teachers
  */
 class Lesson extends \yii\db\ActiveRecord
 {
@@ -34,6 +35,7 @@ class Lesson extends \yii\db\ActiveRecord
     ];
 
     public $coverFile;
+    public $teachers;
 
     /**
      * @inheritdoc
@@ -52,7 +54,7 @@ class Lesson extends \yii\db\ActiveRecord
             [['price'], 'number'],
             [['details'], 'string'],
             [['status'], 'integer'],
-            [['ctime'], 'safe'],
+            [['ctime', 'teachers'], 'safe'],
             [['lesson_id'], 'string', 'max' => 12],
             [['name', 'intro', 'cover', 'chapters'], 'string', 'max' => 1000],
             [['coverFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
@@ -75,6 +77,7 @@ class Lesson extends \yii\db\ActiveRecord
             'chapters' => '章节信息',
             'status' => '状态',
             'ctime' => '创建时间',
+            'teachers' => '导师',
         ];
     }
 

@@ -42,18 +42,33 @@ use yii\jui\AutoComplete;
 
     <?= $form->field($model, 'details')->textarea(['rows' => 6]) ?>
 
-    <div class="row">
-        <?= $form->field($model, 'chapters')->widget(\yii\jui\AutoComplete::classname(), [
-            'options' => [
-                'placeholder' => '导师的手机号或名字',
-            ],
-            'clientOptions' => [
-                'source' => \app\models\Teacher::find()
-                    ->select(['name' => new \yii\db\Expression("CONCAT(phone, ' ', name)")])
-                    ->asArray()
-                    ->column(),
-            ],
-        ]) ?>
+    <div class="row form-group">
+        <div class="col-md-12">
+
+            <?= Html::activeHiddenInput($model, 'teachers') ?>
+
+            <b>导师：</b>
+            <?php
+            echo AutoComplete::widget([
+                'name' => 'teacher',
+                'id' => 'teacher',
+                'options' => [
+                    'placeholder' => '输入手机号、姓名或ID',
+                ],
+                'clientOptions' => [
+                    'source' => \app\models\Teacher::find()
+                        ->select(['name' => new \yii\db\Expression("CONCAT(name, ' ', phone, ' ', teacher_id)")])
+                        ->asArray()
+                        ->column(),
+                ],
+            ]);
+            ?>
+            &nbsp;
+            <span id="teacher-list">
+                <span class="label label-primary">Primary</span>
+            </span>
+
+        </div>
     </div>
 
     <div class="form-group">
@@ -63,3 +78,34 @@ use yii\jui\AutoComplete;
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php
+$this->registerJs('
+        $(window).keydown(function(event){
+            if(event.keyCode == 13) {
+                if (event.target.id == "teacher"){
+                    add();
+                }
+                event.preventDefault();
+                return false;
+            }
+        });
+');
+?>
+
+<script>
+    function add() {
+        var teacher = $('#teacher');
+        var param = teacher.val().split(' ');
+        if (param.length == 3) {
+            var teacher_name = param[0];
+            var teacher_id = param[2];
+            $("#teacher-list").append("<span style='cursor: pointer' class='label label-primary' onclick='remove(this)'>" + teacher_name + "</span>\n");
+            teacher.val('');
+        }
+    }
+
+    function remove(e) {
+        $(e).remove();
+    }
+</script>

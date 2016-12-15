@@ -1,0 +1,115 @@
+<?php
+
+namespace app\models;
+
+use Yii;
+use mycompany\common\Logic;
+use yii\behaviors\AttributeBehavior;
+use yii\db\ActiveRecord;
+use yii\web\UploadedFile;
+
+/**
+ * This is the model class for table "lesson".
+ *
+ * @property string $lesson_id
+ * @property string $name
+ * @property string $price
+ * @property string $intro
+ * @property string $details
+ * @property string $cover
+ * @property \yii\web\UploadedFile $coverFile
+ * @property string $chapters
+ * @property integer $status
+ * @property string $ctime
+ */
+class Lesson extends \yii\db\ActiveRecord
+{
+    const STATUS_NOT_BEGIN = 1;
+    const STATUS_RUNNING = 2;
+    const STATUS_END = 3;
+    public static $statuses = [
+        self::STATUS_NOT_BEGIN => '未开始',
+        self::STATUS_RUNNING => '进行中',
+        self::STATUS_END => '已结束',
+    ];
+
+    public $coverFile;
+
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return 'lesson';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['price'], 'number'],
+            [['details'], 'string'],
+            [['status'], 'integer'],
+            [['ctime'], 'safe'],
+            [['lesson_id'], 'string', 'max' => 12],
+            [['name', 'intro', 'cover', 'chapters'], 'string', 'max' => 1000],
+            [['coverFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'lesson_id' => '课程ID',
+            'name' => '名字',
+            'price' => '价格',
+            'intro' => '简介',
+            'details' => '详情',
+            'cover' => '封面',
+            'coverFile' => '封面',
+            'chapters' => '章节信息',
+            'status' => '状态',
+            'ctime' => '创建时间',
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => AttributeBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => 'lesson_id',
+                ],
+                'value' => Logic::makeID(),
+            ],
+        ];
+    }
+
+    public function fields()
+    {
+        return [
+            'lesson_id',
+            'name',
+        ];
+    }
+
+    public function setCover()
+    {
+        if ($this->coverFile = UploadedFile::getInstance($this, 'coverFile')) {
+            $this->cover = Logic::makeID() . '.' . $this->coverFile->extension;
+        }
+    }
+
+    public function saveCover()
+    {
+        if ($this->coverFile && $this->cover) {
+            $this->coverFile->saveAs(Yii::getAlias('@webroot/images/' . $this->cover));
+        }
+    }
+}

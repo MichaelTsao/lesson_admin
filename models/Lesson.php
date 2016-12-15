@@ -21,7 +21,7 @@ use yii\web\UploadedFile;
  * @property string $chapters
  * @property integer $status
  * @property string $ctime
- * @property string $teachers
+ * @property string $_teachers
  */
 class Lesson extends \yii\db\ActiveRecord
 {
@@ -35,7 +35,7 @@ class Lesson extends \yii\db\ActiveRecord
     ];
 
     public $coverFile;
-    public $teachers;
+    public $_teachers = null;
 
     /**
      * @inheritdoc
@@ -114,5 +114,23 @@ class Lesson extends \yii\db\ActiveRecord
         if ($this->coverFile && $this->cover) {
             $this->coverFile->saveAs(Yii::getAlias('@webroot/images/' . $this->cover));
         }
+    }
+
+    public function getTeachers()
+    {
+        if ($this->_teachers === null) {
+            $this->_teachers = LessonTeacher::find()
+                ->select(['teacher_id'])
+                ->where(['lesson_id' => $this->lesson_id])
+                ->orderBy(['sort' => SORT_ASC])
+                ->asArray()
+                ->column();
+        }
+        return $this->_teachers;
+    }
+
+    public function setTeachers($value)
+    {
+
     }
 }

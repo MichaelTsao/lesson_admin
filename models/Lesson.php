@@ -21,7 +21,7 @@ use yii\web\UploadedFile;
  * @property string $chapters
  * @property integer $status
  * @property string $ctime
- * @property string $_teachers
+ * @property string $teachers
  */
 class Lesson extends \yii\db\ActiveRecord
 {
@@ -35,7 +35,7 @@ class Lesson extends \yii\db\ActiveRecord
     ];
 
     public $coverFile;
-    public $_teachers = null;
+    protected $_teachers = null;
 
     /**
      * @inheritdoc
@@ -126,11 +126,19 @@ class Lesson extends \yii\db\ActiveRecord
                 ->asArray()
                 ->column();
         }
-        return $this->_teachers;
+        return json_encode($this->_teachers);
     }
 
     public function setTeachers($value)
     {
-
+        $this->_teachers = $value;
+        LessonTeacher::deleteAll(['lesson_id' => $this->lesson_id]);
+        foreach (json_decode($value, true) as $index => $item) {
+            $teacher = new LessonTeacher();
+            $teacher->lesson_id = $this->lesson_id;
+            $teacher->teacher_id = $item;
+            $teacher->sort = $index;
+            $teacher->save();
+        }
     }
 }

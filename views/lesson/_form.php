@@ -65,14 +65,20 @@ use yii\jui\AutoComplete;
             ?>
             &nbsp;
             <span id="teacher-list">
-                <span class="label label-primary">Primary</span>
+                <?php foreach (json_decode($model->teachers, true) as $item): ?>
+                    <span style="cursor: pointer" class="label label-primary" onclick='remove_teacher(this)'
+                          id="<?= $item ?>">
+                        <?= \app\models\Teacher::findOne($item)->name ?>
+                    </span>&nbsp;
+                <?php endforeach; ?>
             </span>
 
         </div>
     </div>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'),
+            ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
@@ -100,12 +106,30 @@ $this->registerJs('
         if (param.length == 3) {
             var teacher_name = param[0];
             var teacher_id = param[2];
-            $("#teacher-list").append("<span style='cursor: pointer' class='label label-primary' onclick='remove(this)'>" + teacher_name + "</span>\n");
+            var teachers_json = $('#lesson-teachers');
+            var teachers = $.parseJSON(teachers_json.val());
+
+            if ($.inArray(teacher_id, teachers) == -1) {
+                var item = "<span style='cursor: pointer' class='label label-primary' onclick='remove_teacher(this)' id='" + teacher_id + "'>"
+                    + teacher_name + "</span>\n";
+                $("#teacher-list").append(item);
+
+                teachers.push(teacher_id);
+                teachers_json.val(JSON.stringify(teachers));
+            }
             teacher.val('');
         }
     }
 
-    function remove(e) {
+    function remove_teacher(e) {
+        var teachers_json = $('#lesson-teachers');
+        var teachers = $.parseJSON(teachers_json.val());
+
+        teachers = $.grep(teachers, function (value) {
+            return value != $(e).attr('id');
+        });
+        teachers_json.val(JSON.stringify(teachers));
+
         $(e).remove();
     }
 </script>

@@ -22,6 +22,8 @@ foreach (json_decode($model->teachers, true) as $item) {
 
     <p>
         <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->lesson_id], ['class' => 'btn btn-primary']) ?>
+        &nbsp;
+        <?= Html::a(Yii::t('app', 'Update Ware'), ['update-ware', 'id' => $model->lesson_id], ['class' => 'btn btn-warning']) ?>
         <?php /* Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->lesson_id], [
             'class' => 'btn btn-danger',
             'data' => [

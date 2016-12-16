@@ -39,7 +39,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view} {update}',
+                'template' => '{view} {update} {update-ware}',
+                'buttons' => [
+                    'update-ware' => function ($url, $model, $key) {
+                        return Html::a(
+                            '<span class="glyphicon glyphicon-book"></span>',
+                            \yii\helpers\Url::to(['update-ware', 'id' => $model->lesson_id]),
+                            [
+                                'title' => '编辑课件',
+                            ]
+                        );
+                    },
+                ],
             ],
         ],
     ]); ?>

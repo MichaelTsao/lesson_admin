@@ -18,4 +18,5 @@ return [
     'Delete' => '删除',
     'Create' => '创建',
     'Are you sure you want to delete this item?' => '你确认要删除此条数据？',
+    'Update Ware' => '编辑课件',
 ];

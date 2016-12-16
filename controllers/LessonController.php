@@ -101,6 +101,15 @@ class LessonController extends Controller
         ]);
     }
 
+    public function actionUpdateWare($id)
+    {
+        $model = $this->findModel($id);
+
+        return $this->render('update-ware', [
+            'model' => $model,
+        ]);
+    }
+
     /**
      * Deletes an existing Lesson model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

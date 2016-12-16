@@ -89,7 +89,13 @@ class Lesson extends \yii\db\ActiveRecord
                 'attributes' => [
                     ActiveRecord::EVENT_BEFORE_INSERT => 'lesson_id',
                 ],
-                'value' => Logic::makeID(),
+                'value' => function ($event) {
+                    if (!$this->lesson_id) {
+                        return Logic::makeID();
+                    } else {
+                        return $this->lesson_id;
+                    }
+                },
             ],
         ];
     }

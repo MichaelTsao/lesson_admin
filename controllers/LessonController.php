@@ -8,7 +8,7 @@ use app\models\LessonSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\UploadedFile;
+use yii\jui\Sortable;
 
 /**
  * LessonController implements the CRUD actions for Lesson model.
@@ -105,9 +105,27 @@ class LessonController extends Controller
     {
         $model = $this->findModel($id);
 
+        $chapters = [];
+        foreach (json_decode($model->chapters, true) as $item) {
+            $chapters[] = $this->renderPartial('chapter', ['id' => $item]);
+        }
+
         return $this->render('update-ware', [
             'model' => $model,
+            'chapters' => $chapters,
         ]);
+    }
+
+    public function actionNewChapter()
+    {
+        $sort = new Sortable([
+            'items' => [$this->renderPartial('chapter', [])],
+            'options' => ['tag' => 'div'],
+            'itemOptions' => ['tag' => 'div'],
+            'clientOptions' => ['cursor' => 'move'],
+        ]);
+        return $sort->renderItems();
+
     }
 
     /**

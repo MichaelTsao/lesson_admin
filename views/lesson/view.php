@@ -10,6 +10,11 @@ use \app\models\Lesson;
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Lessons'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+$teacherStr = '';
+foreach (json_decode($model->teachers, true) as $item) {
+    $teacherStr .= '<span class="label label-primary">' . \app\models\Teacher::findOne($item)->name . "</span>&nbsp;";
+}
 ?>
 <div class="lesson-view">
 
@@ -40,7 +45,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => \yii\bootstrap\Html::img(Yii::$app->params['imageHost'] . $model->cover, ['height' => 150]),
                 'format' => 'html',
             ],
-            'chapters',
+            [
+                'attribute' => 'teachers',
+                'value' => $teacherStr,
+                'format' => 'html',
+            ],
             [
                 'attribute' => 'status',
                 'value' => isset(Lesson::$statuses[$model->status]) ? Lesson::$statuses[$model->status] : '未知',

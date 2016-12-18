@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use mycompany\common\Logic;
 use Yii;
 use app\models\Lesson;
 use app\models\LessonSearch;
@@ -118,7 +119,19 @@ class LessonController extends Controller
     public function actionNewChapter()
     {
         $sort = new Sortable([
-            'items' => [$this->renderPartial('chapter', [])],
+            'items' => [$this->renderPartial('chapter')],
+            'options' => ['tag' => 'div'],
+            'itemOptions' => ['tag' => 'div'],
+            'clientOptions' => ['cursor' => 'move'],
+        ]);
+        return $sort->renderItems();
+
+    }
+
+    public function actionNewPoint()
+    {
+        $sort = new Sortable([
+            'items' => [$this->renderPartial('point')],
             'options' => ['tag' => 'div'],
             'itemOptions' => ['tag' => 'div'],
             'clientOptions' => ['cursor' => 'move'],

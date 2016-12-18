@@ -2,6 +2,8 @@
 
 use yii\bootstrap\Html;
 use yii\jui\Sortable;
+use app\models\Section;
+use mycompany\common\Logic;
 
 /**
  * Created by PhpStorm.
@@ -13,7 +15,16 @@ use yii\jui\Sortable;
  * @var $this yii\web\View
  */
 
-$chapter = \app\models\Section::findOne($id);
+$points = [];
+if (isset($id)) {
+    $chapter = Section::findOne($id);
+    foreach (\app\models\Tree::children($id) as $item) {
+        $points[] = $this->render('point', ['id' => $item]);
+    }
+} else {
+    $chapter = new Section();
+    $chapter->section_id = Logic::makeID();
+}
 ?>
 
 <div class="panel panel-default">
@@ -31,6 +42,7 @@ $chapter = \app\models\Section::findOne($id);
             </div>
         </div>
     </div>
+
     <div class="panel-body">
 
         <div class="row vertical-center">
@@ -45,12 +57,6 @@ $chapter = \app\models\Section::findOne($id);
         <div class="row">
             <div class="col-md-12">
                 <?php
-                $points = [];
-
-                foreach (\app\models\Tree::children($id) as $item) {
-                    $points[] = $this->render('point', ['id' => $item]);
-                }
-
                 echo Sortable::widget([
                     'items' => $points,
                     'options' => ['tag' => 'div'],
@@ -64,7 +70,7 @@ $chapter = \app\models\Section::findOne($id);
 
         <div class="row">
             <div class="col-md-12" style="text-align: center">
-                <?= Html::button('增加知识点', ['class' => 'btn btn-info', 'onclick' => '']) ?>
+                <?= Html::button('增加知识点', ['class' => 'btn btn-info', 'onclick' => 'newPoint("' . $chapter->section_id . '")']) ?>
                 &nbsp;
                 <?= Html::button('删除本课', ['class' => 'btn btn-danger', 'onclick' => '']) ?>
             </div>

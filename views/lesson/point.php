@@ -1,6 +1,8 @@
 <?php
 
 use yii\bootstrap\Html;
+use app\models\Section;
+use mycompany\common\Logic;
 
 /**
  * Created by PhpStorm.
@@ -11,7 +13,12 @@ use yii\bootstrap\Html;
  * @var $id int Point ID
  */
 
-$point = \app\models\Section::findOne($id);
+if (isset($id)) {
+    $point = Section::findOne($id);
+}else{
+    $point = new Section();
+    $point->section_id = Logic::makeID();
+}
 ?>
 
 <div class="row form-group vertical-center">

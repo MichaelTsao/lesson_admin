@@ -54,6 +54,10 @@ class Tree extends \yii\db\ActiveRecord
 
     public static function children($id)
     {
-        return json_decode(self::findOne($id)->children, true);
+        $result = [];
+        if ($parent = self::findOne($id)) {
+            $result = json_decode($parent->children, true);
+        }
+        return $result;
     }
 }

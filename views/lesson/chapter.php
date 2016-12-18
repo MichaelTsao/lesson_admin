@@ -1,6 +1,7 @@
 <?php
 
-use yii\helpers\Html;
+use yii\bootstrap\Html;
+use yii\jui\Sortable;
 
 /**
  * Created by PhpStorm.
@@ -9,28 +10,57 @@ use yii\helpers\Html;
  * Time: 下午4:23
  *
  * @var $id int Chapter ID
+ * @var $this yii\web\View
  */
 
 $chapter = \app\models\Section::findOne($id);
 ?>
 
 <div class="panel panel-default">
-    <div class="panel-heading">课名: <?= $chapter->name ?></div>
+    <div class="panel-heading">
+        <div class="row vertical-center">
+            <div class="col-md-1" style="text-align: right">
+                课名 :
+            </div>
+            <div class="col-md-11">
+                <?= Html::activeTextInput($chapter, 'name', [
+                    'name' => 'Chapter[' . $chapter->section_id . '][name]',
+                    'class' => 'form-control'
+                ]); ?>
+
+            </div>
+        </div>
+    </div>
     <div class="panel-body">
 
-        <div class="row">
-            <div class="col-md-12">
-                知识点：
+        <div class="row vertical-center">
+            <div class="col-md-1" style="text-align: right">
+                知识点 :
+            </div>
+            <div class="col-md-11">
+                &nbsp;
             </div>
         </div>
 
-        <?php foreach (json_decode($chapter->children, true) as $item): ?>
-            <div class="row">
-                <div class="col-md-12">
-                    <?= \app\models\Section::findOne($item)->name ?>
-                </div>
+        <div class="row">
+            <div class="col-md-12">
+                <?php
+                $points = [];
+
+                foreach (\app\models\Tree::children($id) as $item) {
+                    $points[] = $this->render('point', ['id' => $item]);
+                }
+
+                echo Sortable::widget([
+                    'items' => $points,
+                    'options' => ['tag' => 'div'],
+                    'itemOptions' => ['tag' => 'div'],
+                    'clientOptions' => ['cursor' => 'move'],
+                    'id' => 'point_list_' . $chapter->section_id,
+                ]);
+                ?>
             </div>
-        <?php endforeach; ?>
+        </div>
 
         <div class="row">
             <div class="col-md-12" style="text-align: center">

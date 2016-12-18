@@ -105,14 +105,13 @@ class LessonController extends Controller
     {
         $model = $this->findModel($id);
 
-        $chapters = [];
-        foreach (json_decode($model->chapters, true) as $item) {
-            $chapters[] = $this->renderPartial('chapter', ['id' => $item]);
+        if (Yii::$app->request->isPost) {
+            Yii::warning(Yii::$app->request->post());
+            Yii::warning(array_keys(Yii::$app->request->post('Chapter')));
         }
 
         return $this->render('update-ware', [
             'model' => $model,
-            'chapters' => $chapters,
         ]);
     }
 

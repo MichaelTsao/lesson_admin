@@ -18,7 +18,7 @@ class LessonSearch extends Lesson
     public function rules()
     {
         return [
-            [['lesson_id', 'name', 'intro', 'details', 'cover', 'chapters', 'ctime'], 'safe'],
+            [['lesson_id', 'name', 'intro', 'details', 'cover', 'ctime'], 'safe'],
             [['price'], 'number'],
             [['status'], 'integer'],
         ];
@@ -69,7 +69,6 @@ class LessonSearch extends Lesson
             ->andFilterWhere(['like', 'intro', $this->intro])
             ->andFilterWhere(['like', 'details', $this->details])
             ->andFilterWhere(['like', 'cover', $this->cover])
-            ->andFilterWhere(['like', 'chapters', $this->chapters])
             ->andFilterWhere(['like', 'ctime', $this->ctime]);
 
         return $dataProvider;

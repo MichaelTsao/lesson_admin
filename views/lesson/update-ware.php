@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\jui\Sortable;
 use yii\widgets\ActiveForm;
+use app\models\Tree;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Lesson */
@@ -21,6 +22,12 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update Ware');
 
     <div class="row" style="margin: 20px">
         <?php
+        $chapters = [];
+
+        foreach (Tree::children($model->lesson_id) as $item) {
+            $chapters[] = $this->render('chapter', ['id' => $item]);
+        }
+
         echo Sortable::widget([
             'items' => $chapters,
             'options' => ['tag' => 'div'],

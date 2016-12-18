@@ -10,7 +10,6 @@ use Yii;
  * @property integer $section_id
  * @property string $name
  * @property integer $type
- * @property string $children
  * @property string $ctime
  */
 class Section extends \yii\db\ActiveRecord
@@ -36,7 +35,6 @@ class Section extends \yii\db\ActiveRecord
             [['type'], 'integer'],
             [['ctime'], 'safe'],
             [['name'], 'string', 'max' => 500],
-            [['children'], 'string', 'max' => 1000],
         ];
     }
 
@@ -49,7 +47,6 @@ class Section extends \yii\db\ActiveRecord
             'section_id' => '章节ID',
             'name' => '名字',
             'type' => '类型',
-            'children' => '子项目',
             'ctime' => '创建时间',
         ];
     }

@@ -18,7 +18,6 @@ use yii\web\UploadedFile;
  * @property string $details
  * @property string $cover
  * @property \yii\web\UploadedFile $coverFile
- * @property string $chapters
  * @property integer $status
  * @property string $ctime
  * @property string $teachers
@@ -56,7 +55,7 @@ class Lesson extends \yii\db\ActiveRecord
             [['status'], 'integer'],
             [['ctime', 'teachers'], 'safe'],
             [['lesson_id'], 'string', 'max' => 12],
-            [['name', 'intro', 'cover', 'chapters'], 'string', 'max' => 1000],
+            [['name', 'intro', 'cover'], 'string', 'max' => 1000],
             [['coverFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
         ];
     }
@@ -74,7 +73,6 @@ class Lesson extends \yii\db\ActiveRecord
             'details' => '详情',
             'cover' => '封面',
             'coverFile' => '封面',
-            'chapters' => '章节信息',
             'status' => '状态',
             'ctime' => '创建时间',
             'teachers' => '导师',

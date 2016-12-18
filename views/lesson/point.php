@@ -2,7 +2,6 @@
 
 use yii\bootstrap\Html;
 use app\models\Section;
-use mycompany\common\Logic;
 
 /**
  * Created by PhpStorm.
@@ -11,13 +10,13 @@ use mycompany\common\Logic;
  * Time: 下午4:39
  *
  * @var $id int Point ID
+ * @var $chapter_id int Chapter ID
  */
 
 if (isset($id)) {
     $point = Section::findOne($id);
-}else{
-    $point = new Section();
-    $point->section_id = Logic::makeID();
+} else {
+    $point = Section::create();
 }
 ?>
 
@@ -29,7 +28,7 @@ if (isset($id)) {
 
     <div class="col-md-9">
         <?= Html::activeTextInput($point, 'name', [
-            'name' => 'Point[' . $point->section_id . '][name]',
+            'name' => 'Point[' . $chapter_id . '][' . $point->section_id . '][name]',
             'class' => 'form-control',
         ]); ?>
     </div>

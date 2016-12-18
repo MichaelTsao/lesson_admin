@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use mycompany\common\Logic;
 use Yii;
 
 /**
@@ -35,6 +36,7 @@ class Section extends \yii\db\ActiveRecord
             [['type'], 'integer'],
             [['ctime'], 'safe'],
             [['name'], 'string', 'max' => 500],
+            [['name'], 'required'],
         ];
     }
 
@@ -49,5 +51,11 @@ class Section extends \yii\db\ActiveRecord
             'type' => '类型',
             'ctime' => '创建时间',
         ];
+    }
+
+    public static function create()
+    {
+        $section = new Section();
+        $section->section_id = Logic::makeID();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Section;
 use mycompany\common\Logic;
 use Yii;
 use app\models\Lesson;
@@ -107,8 +108,19 @@ class LessonController extends Controller
         $model = $this->findModel($id);
 
         if (Yii::$app->request->isPost) {
-            Yii::warning(Yii::$app->request->post());
-            Yii::warning(array_keys(Yii::$app->request->post('Chapter')));
+            if ($chapters = Yii::$app->request->post('Chapter') && $points = Yii::$app->request->post('Point')) {
+                foreach ($points as $chapter_id => $point) {
+                    $point_list = array_keys($point);
+                    foreach ($point as $point_id => $item) {
+                        if (!$point_model = Section::findOne($point_id)) {
+                            $point_model = Section::create();
+                        }
+                        $point_model->setAttributes($item);
+                        if (!$point_model->save()) {
+                        }
+                    }
+                }
+            }
         }
 
         return $this->render('update-ware', [
@@ -128,10 +140,10 @@ class LessonController extends Controller
 
     }
 
-    public function actionNewPoint()
+    public function actionNewPoint($id)
     {
         $sort = new Sortable([
-            'items' => [$this->renderPartial('point')],
+            'items' => [$this->renderPartial('point', ['chapter_id' => $id])],
             'options' => ['tag' => 'div'],
             'itemOptions' => ['tag' => 'div'],
             'clientOptions' => ['cursor' => 'move'],

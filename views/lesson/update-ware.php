@@ -58,11 +58,15 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update Ware');
     }
 
     function newPoint(id) {
-        $.get('<?= \yii\helpers\Url::to(['new-point'])?>', function (data) {
+        $.get('<?= \yii\helpers\Url::to(['new-point'])?>?id=' + id, function (data) {
             var list = $('#point_list_' + id);
             list.append(data);
             list.addClass('ui-sortable');
-            list.sortable({"cursor":"move"});
+            list.sortable({"cursor": "move"});
         });
+    }
+
+    function delChapter() {
+
     }
 </script>

@@ -3,7 +3,6 @@
 use yii\bootstrap\Html;
 use yii\jui\Sortable;
 use app\models\Section;
-use mycompany\common\Logic;
 
 /**
  * Created by PhpStorm.
@@ -19,11 +18,10 @@ $points = [];
 if (isset($id)) {
     $chapter = Section::findOne($id);
     foreach (\app\models\Tree::children($id) as $item) {
-        $points[] = $this->render('point', ['id' => $item]);
+        $points[] = $this->render('point', ['id' => $item, 'chapter_id' => $id]);
     }
 } else {
-    $chapter = new Section();
-    $chapter->section_id = Logic::makeID();
+    $chapter = Section::create();
 }
 ?>
 

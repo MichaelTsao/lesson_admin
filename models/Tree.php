@@ -60,4 +60,15 @@ class Tree extends \yii\db\ActiveRecord
         }
         return $result;
     }
+
+    public static function setChildren($id, $children)
+    {
+        if ($parent = self::findOne($id)) {
+            $parent->children = json_encode($children);
+            if ($parent->save()){
+                return true;
+            }
+        }
+        return false;
+    }
 }

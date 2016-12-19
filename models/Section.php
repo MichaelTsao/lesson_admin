@@ -3,7 +3,8 @@
 namespace app\models;
 
 use mycompany\common\Logic;
-use Yii;
+use yii\behaviors\AttributeBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "section".
@@ -12,12 +13,15 @@ use Yii;
  * @property string $name
  * @property integer $type
  * @property string $ctime
+ * @property \app\models\Section[] $children
  */
 class Section extends \yii\db\ActiveRecord
 {
     const TYPE_CHAPTER = 1;
     const TYPE_POINT = 2;
     const TYPE_SECTION = 3;
+
+    protected $_children = null;
 
     /**
      * @inheritdoc
@@ -53,9 +57,40 @@ class Section extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function create()
+    public function behaviors()
     {
-        $section = new Section();
-        $section->section_id = Logic::makeID();
+        return [
+            [
+                'class' => AttributeBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => 'section_id',
+                ],
+                'value' => function ($event) {
+                    if (!$this->section_id) {
+                        return Logic::makeID();
+                    } else {
+                        return $this->section_id;
+                    }
+                },
+            ],
+            Children::className(),
+        ];
+    }
+
+    public static function create($type)
+    {
+        return new Section([
+            'type' => $type,
+            'section_id' => Logic::makeID(),
+        ]);
+    }
+
+    public static function get($id, $type)
+    {
+        if ($item = self::findOne($id)) {
+            return $item;
+        } else {
+            return self::create($type);
+        }
     }
 }

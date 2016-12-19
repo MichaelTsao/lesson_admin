@@ -21,6 +21,7 @@ use yii\web\UploadedFile;
  * @property integer $status
  * @property string $ctime
  * @property string $teachers
+ * @property \app\models\Section[] $children
  */
 class Lesson extends \yii\db\ActiveRecord
 {
@@ -57,6 +58,7 @@ class Lesson extends \yii\db\ActiveRecord
             [['lesson_id'], 'string', 'max' => 12],
             [['name', 'intro', 'cover'], 'string', 'max' => 1000],
             [['coverFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
+            [['name'], 'required'],
         ];
     }
 
@@ -95,6 +97,7 @@ class Lesson extends \yii\db\ActiveRecord
                     }
                 },
             ],
+            Children::className(),
         ];
     }
 

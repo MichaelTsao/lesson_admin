@@ -7,7 +7,10 @@
 
 namespace app\commands;
 
+use app\models\Section;
+use app\models\Tree;
 use yii\console\Controller;
+use yii\helpers\ArrayHelper;
 
 /**
  * This command echoes the first argument that you have entered.
@@ -25,6 +28,8 @@ class HelloController extends Controller
      */
     public function actionIndex($message = 'hello world')
     {
-        echo $message . "\n";
+        $a = Section::findAll(Tree::children('5ojj0wzrw4z'));
+        var_dump(ArrayHelper::getColumn($a, 'name'));
+        var_dump(ArrayHelper::getColumn($a, 'section_id'));
     }
 }

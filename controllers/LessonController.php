@@ -3,7 +3,6 @@
 namespace app\controllers;
 
 use app\models\Section;
-use mycompany\common\Logic;
 use Yii;
 use app\models\Lesson;
 use app\models\LessonSearch;
@@ -105,49 +104,46 @@ class LessonController extends Controller
 
     public function actionUpdateWare($id)
     {
-        $model = $this->findModel($id);
+        $lesson = $this->findModel($id);
 
         if (Yii::$app->request->isPost) {
-            if ($chapters = Yii::$app->request->post('Chapter') && $points = Yii::$app->request->post('Point')) {
-                foreach ($points as $chapter_id => $point) {
-                    $point_list = array_keys($point);
-                    foreach ($point as $point_id => $item) {
-                        if (!$point_model = Section::findOne($point_id)) {
-                            $point_model = Section::create();
-                        }
-                        $point_model->setAttributes($item);
-                        if (!$point_model->save()) {
-                        }
-                    }
-                }
+            if ($chapters_post = Yii::$app->request->post('Chapter')) {
+                Yii::warning($chapters_post);
             }
         }
 
         return $this->render('update-ware', [
-            'model' => $model,
+            'lesson' => $lesson,
         ]);
     }
 
     public function actionNewChapter()
     {
+        $chapter = Section::create(Section::TYPE_CHAPTER);
+
         $sort = new Sortable([
-            'items' => [$this->renderPartial('chapter')],
+            'items' => [$this->renderPartial('chapter', ['chapter' => $chapter])],
             'options' => ['tag' => 'div'],
             'itemOptions' => ['tag' => 'div'],
             'clientOptions' => ['cursor' => 'move'],
         ]);
+
         return $sort->renderItems();
 
     }
 
     public function actionNewPoint($id)
     {
+        $chapter = Section::get($id, Section::TYPE_CHAPTER);
+        $point = Section::create(Section::TYPE_POINT);
+
         $sort = new Sortable([
-            'items' => [$this->renderPartial('point', ['chapter_id' => $id])],
+            'items' => [$this->renderPartial('point', ['chapter' => $chapter, 'point' => $point])],
             'options' => ['tag' => 'div'],
             'itemOptions' => ['tag' => 'div'],
             'clientOptions' => ['cursor' => 'move'],
         ]);
+
         return $sort->renderItems();
 
     }

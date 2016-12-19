@@ -10,18 +10,13 @@ use app\models\Section;
  * Date: 2016/12/16
  * Time: 下午4:23
  *
- * @var $id int Chapter ID
+ * @var $chapter \app\models\Section Chapter Model
  * @var $this yii\web\View
  */
 
 $points = [];
-if (isset($id)) {
-    $chapter = Section::findOne($id);
-    foreach (\app\models\Tree::children($id) as $item) {
-        $points[] = $this->render('point', ['id' => $item, 'chapter_id' => $id]);
-    }
-} else {
-    $chapter = Section::create();
+foreach ($chapter->children as $point) {
+    $points[] = $this->render('point', ['point' => $point, 'chapter' => $chapter]);
 }
 ?>
 
@@ -33,7 +28,7 @@ if (isset($id)) {
             </div>
             <div class="col-md-11">
                 <?= Html::activeTextInput($chapter, 'name', [
-                    'name' => 'Chapter[' . $chapter->section_id . '][name]',
+                    'name' => 'Chapter[' . $chapter->primaryKey . '][name]',
                     'class' => 'form-control'
                 ]); ?>
 
@@ -60,7 +55,7 @@ if (isset($id)) {
                     'options' => ['tag' => 'div'],
                     'itemOptions' => ['tag' => 'div'],
                     'clientOptions' => ['cursor' => 'move'],
-                    'id' => 'point_list_' . $chapter->section_id,
+                    'id' => 'point_list_' . $chapter->primaryKey,
                 ]);
                 ?>
             </div>
@@ -68,7 +63,7 @@ if (isset($id)) {
 
         <div class="row">
             <div class="col-md-12" style="text-align: center">
-                <?= Html::button('增加知识点', ['class' => 'btn btn-info', 'onclick' => 'newPoint("' . $chapter->section_id . '")']) ?>
+                <?= Html::button('增加知识点', ['class' => 'btn btn-info', 'onclick' => 'newPoint("' . $chapter->primaryKey . '")']) ?>
                 &nbsp;
                 <?= Html::button('删除本课', ['class' => 'btn btn-danger', 'onclick' => '']) ?>
             </div>

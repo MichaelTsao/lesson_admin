@@ -1,7 +1,6 @@
 <?php
 
 use yii\bootstrap\Html;
-use app\models\Section;
 
 /**
  * Created by PhpStorm.
@@ -9,15 +8,9 @@ use app\models\Section;
  * Date: 2016/12/18
  * Time: 下午4:39
  *
- * @var $id int Point ID
- * @var $chapter_id int Chapter ID
+ * @var $point \app\models\Section Point Model
+ * @var $chapter \app\models\Section Chapter Model
  */
-
-if (isset($id)) {
-    $point = Section::findOne($id);
-} else {
-    $point = Section::create();
-}
 ?>
 
 <div class="row form-group vertical-center">
@@ -28,7 +21,7 @@ if (isset($id)) {
 
     <div class="col-md-9">
         <?= Html::activeTextInput($point, 'name', [
-            'name' => 'Point[' . $chapter_id . '][' . $point->section_id . '][name]',
+            'name' => 'Chapter[' . $chapter->primaryKey . '][list][' . $point->primaryKey . '][name]',
             'class' => 'form-control',
         ]); ?>
     </div>

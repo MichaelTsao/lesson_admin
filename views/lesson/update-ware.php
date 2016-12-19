@@ -6,12 +6,11 @@ use yii\widgets\ActiveForm;
 use app\models\Tree;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Lesson */
-/* @var $chapters array */
+/* @var $lesson app\models\Lesson */
 
-$this->title = Yii::t('app', 'Update Ware') . '：' . $model->name . ' - ' . $model->lesson_id;
+$this->title = Yii::t('app', 'Update Ware') . '：' . $lesson->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Lessons'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->lesson_id]];
+$this->params['breadcrumbs'][] = ['label' => $lesson->name, 'url' => ['view', 'id' => $lesson->lesson_id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update Ware');
 ?>
 <div class="lesson-update">
@@ -24,8 +23,8 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update Ware');
         <?php
         $chapters = [];
 
-        foreach (Tree::children($model->lesson_id) as $item) {
-            $chapters[] = $this->render('chapter', ['id' => $item]);
+        foreach ($lesson->children as $chapter) {
+            $chapters[] = $this->render('chapter', ['chapter' => $chapter]);
         }
 
         echo Sortable::widget([

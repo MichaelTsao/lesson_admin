@@ -33,6 +33,7 @@ class Children extends Behavior
             ActiveRecord::EVENT_BEFORE_VALIDATE => 'validate',
             ActiveRecord::EVENT_BEFORE_INSERT => 'save',
             ActiveRecord::EVENT_BEFORE_UPDATE => 'save',
+            // TODO: before delete
         ];
     }
 

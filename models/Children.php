@@ -72,9 +72,8 @@ class Children extends Behavior
     {
         $newList = [];
         foreach ($this->_children as $child) {
-            if ($child->save()) {
-                $newList[] = $child->primaryKey;
-            }
+            $child->save();
+            $newList[] = $child->primaryKey;
         }
 
         // remove not used old children

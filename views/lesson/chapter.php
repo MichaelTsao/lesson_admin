@@ -14,7 +14,7 @@ use yii\jui\Sortable;
  */
 ?>
 
-<div class="panel panel-default">
+<div class="panel panel-default" id="panel-<?= $chapter->primaryKey ?>">
     <div class="panel-heading">
         <div class="row vertical-center">
             <div class="col-md-1" style="text-align: right">
@@ -68,7 +68,7 @@ use yii\jui\Sortable;
             <div class="col-md-12" style="text-align: center">
                 <?= Html::button('增加知识点', ['class' => 'btn btn-info', 'onclick' => 'newPoint("' . $chapter->primaryKey . '")']) ?>
                 &nbsp;
-                <?= Html::button('删除本课', ['class' => 'btn btn-danger', 'onclick' => '']) ?>
+                <?= Html::button('删除本课', ['class' => 'btn btn-danger', 'onclick' => 'delChapter("' . $chapter->primaryKey . '")']) ?>
             </div>
         </div>
 

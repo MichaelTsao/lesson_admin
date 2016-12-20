@@ -19,7 +19,6 @@ use yii\db\ActiveRecord;
  * @property string $childClass
  * @property \yii\db\ActiveRecord[] $children
  * @property \yii\db\ActiveRecord[] $_children
- * @property \yii\db\ActiveRecord[] $_oldChildren
  * @property \yii\db\ActiveRecord $owner
  *
  */
@@ -27,7 +26,6 @@ class Children extends Behavior
 {
     public $childClass = '\app\models\Section';
     protected $_children = null;
-    protected $_oldChildren = null;
 
     public function events()
     {
@@ -45,15 +43,19 @@ class Children extends Behavior
     public function getChildren()
     {
         if ($this->_children === null) {
-            $class = $this->childClass;
-
-            $this->_children = [];
-            foreach (Tree::children($this->owner->primaryKey) as $id) {
-                $this->_children[]= $class::findOne($id);
-            }
-            $this->_oldChildren = $this->_children;
+            $this->_children = $this->readChildren();
         }
         return $this->_children;
+    }
+
+    public function readChildren()
+    {
+        $children = [];
+        $class = $this->childClass;
+        foreach (Tree::children($this->owner->primaryKey) as $id) {
+            $children[] = $class::findOne($id);
+        }
+        return $children;
     }
 
     /**
@@ -61,6 +63,7 @@ class Children extends Behavior
      */
     public function setChildren($newChildren)
     {
+        // TODO: validate new children
         $this->_children = $newChildren;
     }
 
@@ -93,8 +96,9 @@ class Children extends Behavior
         }
 
         // remove not used old children
-        if ($this->_oldChildren && $event->name == ActiveRecord::EVENT_BEFORE_UPDATE) {
-            foreach ($this->_oldChildren as $child) {
+        $oldChildren = $this->readChildren();
+        if ($oldChildren && $event->name == ActiveRecord::EVENT_BEFORE_UPDATE) {
+            foreach ($oldChildren as $child) {
                 if (!in_array($child->primaryKey, $newList)) {
                     $child->delete();
                 }
@@ -109,8 +113,14 @@ class Children extends Behavior
 
     public function delete($event)
     {
-        foreach ($this->_children as $child) {
-            $child->delete();
+        if (!$children = $this->readChildren()) {
+            return;
         }
+        foreach ($children as $child) {
+            if ($child) {
+                $child->delete();
+            }
+        }
+        Tree::deleteAll(['parent_id' => $this->owner->primaryKey]);
     }
 }

@@ -13,7 +13,7 @@ use yii\bootstrap\Html;
  */
 ?>
 
-<div class="row form-group vertical-center">
+<div class="row form-group vertical-center" id="point-<?= $point->primaryKey ?>">
 
     <div class="col-md-1" style="text-align: right">
         <span class="glyphicon glyphicon-menu-hamburger"></span>
@@ -31,7 +31,7 @@ use yii\bootstrap\Html;
     </div>
 
     <div class="col-md-2" style="text-align: center">
-        <?= Html::button('删除', ['class' => 'btn btn-danger', 'onclick' => '']) ?>
+        <?= Html::button('删除', ['class' => 'btn btn-danger', 'onclick' => 'delPoint("' . $point->primaryKey . '")']) ?>
         &nbsp;
         <?= Html::button('编辑课件', ['class' => 'btn btn-warning', 'onclick' => '']) ?>
     </div>

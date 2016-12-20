@@ -77,11 +77,11 @@ class Section extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function create($type)
+    public static function create($type, $id = null)
     {
         return new Section([
             'type' => $type,
-            'section_id' => Logic::makeID(),
+            'section_id' => $id ? $id : Logic::makeID(),
         ]);
     }
 
@@ -90,7 +90,7 @@ class Section extends \yii\db\ActiveRecord
         if ($item = self::findOne($id)) {
             return $item;
         } else {
-            return self::create($type);
+            return self::create($type, $id);
         }
     }
 }

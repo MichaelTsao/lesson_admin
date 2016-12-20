@@ -64,7 +64,11 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update Ware');
         });
     }
 
-    function delChapter() {
+    function delChapter(id) {
+        $('#panel-' + id).remove();
+    }
 
+    function delPoint(id) {
+        $('#point-' + id).remove();
     }
 </script>

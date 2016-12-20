@@ -15,13 +15,21 @@ use yii\db\ActiveRecord;
  * @property string $ctime
  * @property \app\models\Section[] $children
  */
-class Section extends \yii\db\ActiveRecord
+class Section extends ActiveRecord
 {
     const TYPE_CHAPTER = 1;
     const TYPE_POINT = 2;
     const TYPE_SECTION = 3;
 
     protected $_children = null;
+
+    public function init()
+    {
+        parent::init();
+        if ($this->type == self::TYPE_SECTION) {
+            $this->childClass = '\app\models\Content';
+        }
+    }
 
     /**
      * @inheritdoc

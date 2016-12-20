@@ -37,32 +37,39 @@ use yii\jui\Sortable;
         <div class="row">
             <div class="col-md-12">
                 <?php
-                /*
-                $points = [];
+                $contents = [];
 
-                foreach ($chapter->children as $point) {
-                    $points[] = $this->render('point', ['point' => $point, 'chapter' => $chapter]);
+                foreach ($section->children as $content) {
+                    $contents[] = $this->render('content', ['content' => $content, 'section' => $section]);
                 }
 
                 echo Sortable::widget([
-                    'items' => $points,
+                    'items' => $contents,
                     'options' => ['tag' => 'div'],
                     'itemOptions' => ['tag' => 'div'],
                     'clientOptions' => ['cursor' => 'move'],
-                    'id' => 'point_list_' . $chapter->primaryKey,
+                    'id' => 'content_list_' . $section->primaryKey,
                 ]);
-                */
                 ?>
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-12" style="text-align: center">
-                <?= Html::button('添加讲解内容', ['class' => 'btn btn-info', 'onclick' => 'newContent("' . $section->primaryKey . '")']) ?>
+                <?= Html::button('添加讲解内容', [
+                    'class' => 'btn btn-info',
+                    'onclick' => 'newContent("' . $section->primaryKey . '", 1)'
+                ]) ?>
                 &nbsp;
-                <?= Html::button('添加图片', ['class' => 'btn btn-primary', 'onclick' => 'newImage("' . $section->primaryKey . '")']) ?>
+                <?= Html::button('添加图片', [
+                    'class' => 'btn btn-primary',
+                    'onclick' => 'newContent("' . $section->primaryKey . '", 2)'
+                ]) ?>
                 &nbsp;
-                <?= Html::button('删除本段', ['class' => 'btn btn-danger', 'onclick' => 'delSection("' . $section->primaryKey . '")']) ?>
+                <?= Html::button('删除本段', [
+                    'class' => 'btn btn-danger',
+                    'onclick' => 'delSection("' . $section->primaryKey . '")'
+                ]) ?>
             </div>
         </div>
 

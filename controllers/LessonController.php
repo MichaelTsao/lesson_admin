@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Content;
 use app\models\Section;
 use Yii;
 use app\models\Lesson;
@@ -181,6 +182,23 @@ class LessonController extends Controller
 
         $sort = new Sortable([
             'items' => [$this->renderPartial('section', ['point' => $point, 'section' => $section])],
+            'options' => ['tag' => 'div'],
+            'itemOptions' => ['tag' => 'div'],
+            'clientOptions' => ['cursor' => 'move'],
+        ]);
+
+        return $sort->renderItems();
+    }
+
+    public function actionNewContent($id, $type)
+    {
+        $section = Section::get($id, Section::TYPE_SECTION);
+        $content = new Content();
+        $content->content_id = $id;
+        $content->type = $type;
+
+        $sort = new Sortable([
+            'items' => [$this->renderPartial('content', ['content' => $content, 'section' => $section])],
             'options' => ['tag' => 'div'],
             'itemOptions' => ['tag' => 'div'],
             'clientOptions' => ['cursor' => 'move'],

@@ -88,10 +88,21 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update Ware');
 
     function newSection(id) {
         $.get('<?= \yii\helpers\Url::to(['new-section'])?>?id=' + id, function (data) {
-            $('#section_list').append(data);
+            var list = $('#section_list');
+            list.append(data);
+            list.addClass('ui-sortable');
+            list.sortable({"cursor": "move"});
         });
     }
 
+    function newContent(id, type) {
+        $.get('<?= \yii\helpers\Url::to(['new-content'])?>?id=' + id+'&type='+type, function (data) {
+            var list = $('#content_list_' + id);
+            list.append(data);
+            list.addClass('ui-sortable');
+            list.sortable({"cursor": "move"});
+        });
+    }
 
     function delChapter(id) {
         $('#panel-' + id).remove();
@@ -99,6 +110,14 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update Ware');
 
     function delPoint(id) {
         $('#point-' + id).remove();
+    }
+
+    function delSection(id) {
+        $('#section-' + id).remove();
+    }
+
+    function delContent(id) {
+        $('#content-' + id).remove();
     }
 
     function showWare(id) {

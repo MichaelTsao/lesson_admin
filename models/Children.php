@@ -116,11 +116,13 @@ class Children extends Behavior
         if (!$children = $this->readChildren()) {
             return;
         }
+
         foreach ($children as $child) {
             if ($child) {
                 $child->delete();
             }
         }
+
         Tree::deleteAll(['parent_id' => $this->owner->primaryKey]);
     }
 }

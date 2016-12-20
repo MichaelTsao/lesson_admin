@@ -20,11 +20,25 @@ use yii\bootstrap\Html;
     </div>
 
     <div class="col-md-9">
-        <?= Html::activeTextInput($content, 'url', [
-            'name' => 'Section[' . $section->primaryKey . '][children][' . $content->primaryKey . '][url]',
-            'class' => 'form-control',
-            'id' => 'content-url-' . $content->primaryKey,
-        ]); ?>
+        <?php if ($content->type == \app\models\Content::TYPE_WORDS): ?>
+            <?= Html::activeTextarea($content, 'content', [
+                'name' => 'Section[' . $section->primaryKey . '][children][' . $content->primaryKey . '][content]',
+                'class' => 'form-control',
+                'id' => 'content-words-' . $content->primaryKey,
+            ]); ?>
+
+            <?= Html::activeFileInput($content, 'url', [
+                'name' => 'Section[' . $section->primaryKey . '][children][' . $content->primaryKey . '][url]',
+                'class' => 'form-control',
+                'id' => 'content-url-' . $content->primaryKey,
+            ]); ?>
+        <?php else: ?>
+            <?= Html::activeFileInput($content, 'url', [
+                'name' => 'Section[' . $section->primaryKey . '][children][' . $content->primaryKey . '][url]',
+                'class' => 'form-control',
+                'id' => 'content-url-' . $content->primaryKey,
+            ]); ?>
+        <?php endif ?>
 
         <?php if ($content->errors): ?>
             <span class="label label-danger"><?= array_values($content->firstErrors)[0]; ?></span>

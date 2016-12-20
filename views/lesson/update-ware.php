@@ -11,6 +11,8 @@ $this->title = Yii::t('app', 'Update Ware') . '：' . $lesson->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Lessons'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $lesson->name, 'url' => ['view', 'id' => $lesson->lesson_id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update Ware');
+
+\app\assets\JFormAsset::register($this);
 ?>
 <div class="lesson-update">
 
@@ -64,7 +66,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update Ware');
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary">保存</button>
+                <button type="button" class="btn btn-primary" onclick="saveWare()">保存</button>
             </div>
         </div>
     </div>
@@ -96,7 +98,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update Ware');
     }
 
     function newContent(id, type) {
-        $.get('<?= \yii\helpers\Url::to(['new-content'])?>?id=' + id+'&type='+type, function (data) {
+        $.get('<?= \yii\helpers\Url::to(['new-content'])?>?id=' + id + '&type=' + type, function (data) {
             var list = $('#content_list_' + id);
             list.append(data);
             list.addClass('ui-sortable');
@@ -125,5 +127,14 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update Ware');
         $.get('<?= \yii\helpers\Url::to(['ware'])?>?id=' + id, function (data) {
             $('#warePanelBody').html(data);
         });
+    }
+
+    function saveWare() {
+        $("#ware-form").ajaxSubmit({
+            type: 'post',
+            success: function (data) {
+                alert(data);
+            }
+        })
     }
 </script>

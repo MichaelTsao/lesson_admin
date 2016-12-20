@@ -14,7 +14,7 @@ use yii\helpers\Html;
  */
 ?>
 
-<?php $form = ActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin(['id' => 'ware-form', 'action' => \yii\helpers\Url::to(['set-ware'])]); ?>
 
 <div class="row" style="margin: 10px;">
 

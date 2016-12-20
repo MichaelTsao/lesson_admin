@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Content;
 use app\models\Section;
+use mycompany\common\Logic;
 use Yii;
 use app\models\Lesson;
 use app\models\LessonSearch;
@@ -139,6 +140,12 @@ class LessonController extends Controller
         ]);
     }
 
+    public function actionSetWare()
+    {
+        Yii::warning(Yii::$app->request->post());
+        return json_encode(Yii::$app->request->post());
+    }
+
     public function actionWare($id)
     {
         $point = Section::get($id, Section::TYPE_POINT);
@@ -194,7 +201,7 @@ class LessonController extends Controller
     {
         $section = Section::get($id, Section::TYPE_SECTION);
         $content = new Content();
-        $content->content_id = $id;
+        $content->content_id = Logic::makeID();
         $content->type = $type;
 
         $sort = new Sortable([

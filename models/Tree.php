@@ -9,14 +9,10 @@ use Yii;
  *
  * @property string $parent_id
  * @property string $children
- * @property integer $last
  * @property string $ctime
  */
 class Tree extends \yii\db\ActiveRecord
 {
-    const IS_LAST = 1;
-    const IS_NOT_LAST = 0;
-
     /**
      * @inheritdoc
      */
@@ -32,7 +28,6 @@ class Tree extends \yii\db\ActiveRecord
     {
         return [
             [['parent_id'], 'required'],
-            [['last'], 'integer'],
             [['ctime'], 'safe'],
             [['parent_id'], 'string', 'max' => 12],
             [['children'], 'string', 'max' => 10000],
@@ -47,7 +42,6 @@ class Tree extends \yii\db\ActiveRecord
         return [
             'parent_id' => '父节点',
             'children' => '子项目',
-            'last' => '是否最底层',
             'ctime' => '创建时间',
         ];
     }
@@ -63,11 +57,13 @@ class Tree extends \yii\db\ActiveRecord
 
     public static function setChildren($id, $children)
     {
-        if ($parent = self::findOne($id)) {
-            $parent->children = json_encode($children);
-            if ($parent->save()){
-                return true;
-            }
+        if (!$parent = self::findOne($id)) {
+            $parent = new Tree();
+            $parent->parent_id = $id;
+        }
+        $parent->children = json_encode($children);
+        if ($parent->save()) {
+            return true;
         }
         return false;
     }

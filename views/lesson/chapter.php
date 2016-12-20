@@ -2,7 +2,6 @@
 
 use yii\bootstrap\Html;
 use yii\jui\Sortable;
-use app\models\Section;
 
 /**
  * Created by PhpStorm.
@@ -13,11 +12,6 @@ use app\models\Section;
  * @var $chapter \app\models\Section Chapter Model
  * @var $this yii\web\View
  */
-
-$points = [];
-foreach ($chapter->children as $point) {
-    $points[] = $this->render('point', ['point' => $point, 'chapter' => $chapter]);
-}
 ?>
 
 <div class="panel panel-default">
@@ -32,6 +26,9 @@ foreach ($chapter->children as $point) {
                     'class' => 'form-control'
                 ]); ?>
 
+                <?php if ($chapter->errors): ?>
+                    <span class="label label-danger"><?= array_values($chapter->firstErrors)[0]; ?></span>
+                <?php endif ?>
             </div>
         </div>
     </div>
@@ -50,6 +47,12 @@ foreach ($chapter->children as $point) {
         <div class="row">
             <div class="col-md-12">
                 <?php
+                $points = [];
+
+                foreach ($chapter->children as $point) {
+                    $points[] = $this->render('point', ['point' => $point, 'chapter' => $chapter]);
+                }
+
                 echo Sortable::widget([
                     'items' => $points,
                     'options' => ['tag' => 'div'],

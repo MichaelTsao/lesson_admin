@@ -107,8 +107,29 @@ class LessonController extends Controller
         $lesson = $this->findModel($id);
 
         if (Yii::$app->request->isPost) {
-            if ($chapters_post = Yii::$app->request->post('Chapter')) {
-                Yii::warning($chapters_post);
+            if ($chaptersPost = Yii::$app->request->post('Chapter')) {
+                $chapters = [];
+                foreach ($chaptersPost as $chapterId => $chapterInfo) {
+                    $chapter = Section::get($chapterId, Section::TYPE_CHAPTER);
+                    $chapter->attributes = $chapterInfo;
+
+                    $points = [];
+                    if (isset($chapterInfo['children'])) {
+                        foreach ($chapterInfo['children'] as $pointId => $pointInfo) {
+                            $point = Section::get($pointId, Section::TYPE_POINT);
+                            $point->attributes = $pointInfo;
+                            $points[] = $point;
+                        }
+                    }
+                    $chapter->children = $points;
+
+                    $chapters[] = $chapter;
+                }
+                $lesson->children = $chapters;
+
+                if ($lesson->save()) {
+                    return $this->redirect(['view', 'id' => $lesson->lesson_id]);
+                }
             }
         }
 

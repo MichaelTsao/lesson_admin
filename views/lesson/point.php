@@ -21,9 +21,13 @@ use yii\bootstrap\Html;
 
     <div class="col-md-9">
         <?= Html::activeTextInput($point, 'name', [
-            'name' => 'Chapter[' . $chapter->primaryKey . '][list][' . $point->primaryKey . '][name]',
+            'name' => 'Chapter[' . $chapter->primaryKey . '][children][' . $point->primaryKey . '][name]',
             'class' => 'form-control',
         ]); ?>
+
+        <?php if ($point->errors): ?>
+            <span class="label label-danger"><?= array_values($point->firstErrors)[0]; ?></span>
+        <?php endif ?>
     </div>
 
     <div class="col-md-2" style="text-align: center">

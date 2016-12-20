@@ -23,6 +23,7 @@ use yii\bootstrap\Html;
         <?= Html::activeTextInput($point, 'name', [
             'name' => 'Chapter[' . $chapter->primaryKey . '][children][' . $point->primaryKey . '][name]',
             'class' => 'form-control',
+            'id' => 'point-name-' . $point->primaryKey,
         ]); ?>
 
         <?php if ($point->errors): ?>
@@ -31,9 +32,17 @@ use yii\bootstrap\Html;
     </div>
 
     <div class="col-md-2" style="text-align: center">
-        <?= Html::button('删除', ['class' => 'btn btn-danger', 'onclick' => 'delPoint("' . $point->primaryKey . '")']) ?>
+        <?= Html::button('删除', [
+            'class' => 'btn btn-danger',
+            'onclick' => 'delPoint("' . $point->primaryKey . '")'
+        ]) ?>
         &nbsp;
-        <?= Html::button('编辑课件', ['class' => 'btn btn-warning', 'onclick' => '']) ?>
+        <?= Html::button('编辑课件', [
+            'class' => 'btn btn-warning',
+            'onclick' => 'showWare("' . $point->primaryKey . '")',
+            'data-toggle' => 'modal',
+            'data-target' => '#warePanel'
+        ]) ?>
     </div>
 
 </div>

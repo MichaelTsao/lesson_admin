@@ -138,6 +138,13 @@ class LessonController extends Controller
         ]);
     }
 
+    public function actionWare($id)
+    {
+        $point = Section::get($id, Section::TYPE_POINT);
+
+        return $this->renderPartial('ware', ['point' => $point]);
+    }
+
     public function actionNewChapter()
     {
         $chapter = Section::create(Section::TYPE_CHAPTER);
@@ -150,7 +157,6 @@ class LessonController extends Controller
         ]);
 
         return $sort->renderItems();
-
     }
 
     public function actionNewPoint($id)
@@ -166,7 +172,21 @@ class LessonController extends Controller
         ]);
 
         return $sort->renderItems();
+    }
 
+    public function actionNewSection($id)
+    {
+        $point = Section::get($id, Section::TYPE_POINT);
+        $section = Section::create(Section::TYPE_SECTION);
+
+        $sort = new Sortable([
+            'items' => [$this->renderPartial('section', ['point' => $point, 'section' => $section])],
+            'options' => ['tag' => 'div'],
+            'itemOptions' => ['tag' => 'div'],
+            'clientOptions' => ['cursor' => 'move'],
+        ]);
+
+        return $sort->renderItems();
     }
 
     /**

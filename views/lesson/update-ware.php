@@ -48,6 +48,28 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update Ware');
 
 </div>
 
+<!-- 课件修改页面 -->
+<div class="modal fade" id="warePanel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="warePanelTitle">课名</h4>
+            </div>
+            <div class="modal-body" id="warePanelBody">
+                加载中...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     function newChapter() {
         $.get('<?= \yii\helpers\Url::to(['new-chapter'])?>', function (data) {
@@ -64,11 +86,25 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update Ware');
         });
     }
 
+    function newSection(id) {
+        $.get('<?= \yii\helpers\Url::to(['new-section'])?>?id=' + id, function (data) {
+            $('#section_list').append(data);
+        });
+    }
+
+
     function delChapter(id) {
         $('#panel-' + id).remove();
     }
 
     function delPoint(id) {
         $('#point-' + id).remove();
+    }
+
+    function showWare(id) {
+        $('#warePanelTitle').html($('#point-name-' + id).val());
+        $.get('<?= \yii\helpers\Url::to(['ware'])?>?id=' + id, function (data) {
+            $('#warePanelBody').html(data);
+        });
     }
 </script>

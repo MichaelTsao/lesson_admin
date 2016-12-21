@@ -23,9 +23,9 @@ class Section extends ActiveRecord
 
     protected $_children = null;
 
-    public function init()
+    public function afterFind()
     {
-        parent::init();
+        parent::afterFind();
         if ($this->type == self::TYPE_SECTION) {
             $this->childClass = '\app\models\Content';
         }

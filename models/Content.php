@@ -94,6 +94,13 @@ class Content extends ActiveRecord
         }
     }
 
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        $this->saveFile();
+    }
+
     public static function create($type, $id = null)
     {
         return new Content([

@@ -22,7 +22,7 @@ use yii\helpers\Html;
     $sections = [];
 
     foreach ($point->children as $section) {
-        $sections[] = $this->render('section', ['section' => $section]);
+        $sections[] = $this->render('section', ['section' => $section, 'point' => $point]);
     }
 
     echo Sortable::widget([

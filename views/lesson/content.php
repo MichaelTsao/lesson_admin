@@ -20,24 +20,39 @@ use yii\bootstrap\Html;
     </div>
 
     <div class="col-md-9">
+
+        <?= Html::hiddenInput(
+            'Section[' . $section->primaryKey . '][children][' . $content->primaryKey . '][type]',
+            $content->type);
+        ?>
         <?php if ($content->type == \app\models\Content::TYPE_WORDS): ?>
+
             <?= Html::activeTextarea($content, 'content', [
                 'name' => 'Section[' . $section->primaryKey . '][children][' . $content->primaryKey . '][content]',
                 'class' => 'form-control',
                 'id' => 'content-words-' . $content->primaryKey,
             ]); ?>
 
-            <?= Html::activeFileInput($content, 'url', [
-                'name' => 'Section[' . $section->primaryKey . '][children][' . $content->primaryKey . '][url]',
+            <?= Html::activeFileInput($content, 'file', [
+                'name' => 'Section[' . $section->primaryKey . '][children][' . $content->primaryKey . '][file]',
                 'class' => 'form-control',
                 'id' => 'content-url-' . $content->primaryKey,
             ]); ?>
+
+            <audio controls>
+                <source src="<?= 'http://lesson-adm.cx/images/' . $content->url ?>" type="audio/mpeg">
+            </audio>
+
         <?php else: ?>
-            <?= Html::activeFileInput($content, 'url', [
-                'name' => 'Section[' . $section->primaryKey . '][children][' . $content->primaryKey . '][url]',
+
+            <?= Html::activeFileInput($content, 'file', [
+                'name' => 'Section[' . $section->primaryKey . '][children][' . $content->primaryKey . '][file]',
                 'class' => 'form-control',
                 'id' => 'content-url-' . $content->primaryKey,
             ]); ?>
+
+            <?= Html::img('http://lesson-adm.cx/images/' . $content->url, ['width' => 100]); ?>
+
         <?php endif ?>
 
         <?php if ($content->errors): ?>

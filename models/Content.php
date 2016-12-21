@@ -6,6 +6,7 @@ use Yii;
 use mycompany\common\Logic;
 use yii\behaviors\AttributeBehavior;
 use yii\db\ActiveRecord;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "content".
@@ -13,6 +14,7 @@ use yii\db\ActiveRecord;
  * @property integer $content_id
  * @property integer $type
  * @property string $url
+ * @property \yii\web\UploadedFile $file
  * @property string $content
  * @property string $ctime
  */
@@ -20,6 +22,8 @@ class Content extends ActiveRecord
 {
     const TYPE_WORDS = 1;
     const TYPE_IMAGE = 2;
+
+    public $file;
 
     /**
      * @inheritdoc
@@ -39,6 +43,7 @@ class Content extends ActiveRecord
             [['content'], 'string'],
             [['ctime'], 'safe'],
             [['url'], 'string', 'max' => 1000],
+            [['file'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, mp3'],
         ];
     }
 
@@ -73,5 +78,36 @@ class Content extends ActiveRecord
                 },
             ],
         ];
+    }
+
+    public function setFile($name)
+    {
+        if ($this->file = UploadedFile::getInstanceByName($name)) {
+            $this->url = Logic::makeID() . '.' . $this->file->extension;
+        }
+    }
+
+    public function saveFile()
+    {
+        if ($this->file && $this->url) {
+            $this->file->saveAs(Yii::getAlias('@webroot/images/' . $this->url));
+        }
+    }
+
+    public static function create($type, $id = null)
+    {
+        return new Content([
+            'type' => $type,
+            'content_id' => $id ? $id : Logic::makeID(),
+        ]);
+    }
+
+    public static function get($id, $type)
+    {
+        if ($item = self::findOne($id)) {
+            return $item;
+        } else {
+            return self::create($type, $id);
+        }
     }
 }

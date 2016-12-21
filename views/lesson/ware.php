@@ -43,5 +43,7 @@ use yii\helpers\Html;
 
 </div>
 
+<?= Html::hiddenInput('current-point-id', '', ['id' => 'current-point-id']) ?>
+
 <?php ActiveForm::end(); ?>
 

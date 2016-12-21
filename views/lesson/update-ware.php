@@ -126,12 +126,12 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update Ware');
         $('#warePanelTitle').html($('#point-name-' + id).val());
         $.get('<?= \yii\helpers\Url::to(['ware'])?>?id=' + id, function (data) {
             $('#warePanelBody').html(data);
+            $('#current-point-id').val(id);
         });
     }
 
     function saveWare() {
         $("#ware-form").ajaxSubmit({
-            type: 'post',
             success: function (data) {
                 alert(data);
             }

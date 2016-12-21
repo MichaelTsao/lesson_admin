@@ -142,8 +142,36 @@ class LessonController extends Controller
 
     public function actionSetWare()
     {
-        Yii::warning(Yii::$app->request->post());
-        return json_encode(Yii::$app->request->post());
+        $pointId = Yii::$app->request->post('current-point-id');
+        $point = Section::findOne($pointId);
+
+        if ($sectionPost = Yii::$app->request->post('Section')) {
+            $sections = [];
+            foreach ($sectionPost as $sectionId => $sectionInfo) {
+                $section = Section::get($sectionId, Section::TYPE_SECTION);
+                $section->attributes = $sectionInfo;
+
+                $contents = [];
+                if (isset($sectionInfo['children'])) {
+                    foreach ($sectionInfo['children'] as $contentId => $contentInfo) {
+                        $content = Content::get($contentId, $contentInfo['type']);
+                        $content->attributes = $contentInfo;
+                        $content->setFile('Section[' . $sectionId . '][children][' . $contentId . '][file]');
+                        $contents[] = $content;
+                    }
+                }
+                $section->children = $contents;
+
+                $sections[] = $section;
+            }
+            $point->children = $sections;
+
+            if ($point->save()) {
+                return 'ok';
+            }
+        }
+
+        return $this->renderPartial('ware', ['point' => $point]);
     }
 
     public function actionWare($id)
@@ -200,9 +228,7 @@ class LessonController extends Controller
     public function actionNewContent($id, $type)
     {
         $section = Section::get($id, Section::TYPE_SECTION);
-        $content = new Content();
-        $content->content_id = Logic::makeID();
-        $content->type = $type;
+        $content = Content::create($type);
 
         $sort = new Sortable([
             'items' => [$this->renderPartial('content', ['content' => $content, 'section' => $section])],

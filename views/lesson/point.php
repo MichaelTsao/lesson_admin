@@ -37,12 +37,18 @@ use yii\bootstrap\Html;
             'onclick' => 'delPoint("' . $point->primaryKey . '")'
         ]) ?>
         &nbsp;
-        <?= Html::button('编辑课件', [
+        <?php
+        $config = [
             'class' => 'btn btn-warning',
             'onclick' => 'showWare("' . $point->primaryKey . '")',
             'data-toggle' => 'modal',
-            'data-target' => '#warePanel'
-        ]) ?>
+            'data-target' => '#warePanel',
+        ];
+        if ($point->isNewRecord) {
+            $config['disabled'] = "disabled";
+        }
+        echo Html::button('编辑课件', $config);
+        ?>
     </div>
 
 </div>

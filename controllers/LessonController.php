@@ -130,7 +130,7 @@ class LessonController extends Controller
                 $lesson->children = $chapters;
 
                 if ($lesson->save()) {
-                    return $this->redirect(['view', 'id' => $lesson->lesson_id]);
+//                    return $this->redirect(['view', 'id' => $lesson->lesson_id]);
                 }
             }
         }

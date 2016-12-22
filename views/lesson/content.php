@@ -39,9 +39,11 @@ use yii\bootstrap\Html;
                 'id' => 'content-url-' . $content->primaryKey,
             ]); ?>
 
-            <audio controls>
-                <source src="<?= 'http://lesson-adm.cx/images/' . $content->url ?>" type="audio/mpeg">
-            </audio>
+            <?php if ($content->url): ?>
+                <audio controls>
+                    <source src="<?= 'http://lesson-adm.cx/images/' . $content->url ?>" type="audio/mpeg">
+                </audio>
+            <?php endif ?>
 
         <?php else: ?>
 
@@ -51,7 +53,9 @@ use yii\bootstrap\Html;
                 'id' => 'content-url-' . $content->primaryKey,
             ]); ?>
 
-            <?= Html::img('http://lesson-adm.cx/images/' . $content->url, ['width' => 100]); ?>
+            <?php if ($content->url): ?>
+                <?= Html::img('http://lesson-adm.cx/images/' . $content->url, ['width' => 100]); ?>
+            <?php endif ?>
 
         <?php endif ?>
 

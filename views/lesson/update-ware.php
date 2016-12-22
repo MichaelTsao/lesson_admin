@@ -43,6 +43,8 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update Ware');
     </div>
 
     <div class="form-group">
+        <?= Html::a('返回', \yii\helpers\Url::to(['view', 'id' => $lesson->primaryKey]), ['class' => 'btn btn-default']) ?>
+        &nbsp;
         <?= Html::submitButton('保存', ['class' => 'btn btn-primary']) ?>
     </div>
 
